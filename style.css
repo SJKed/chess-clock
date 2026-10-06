@@ -135,6 +135,23 @@ button { font: inherit; color: inherit; }
   font-variant-numeric: tabular-nums;
 }
 
+.install {
+  position: absolute;
+  left: 6px;
+  padding: 6px 12px;
+  border: 1px solid #444;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--active);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.install[hidden] { display: none; }
+.clock:not(.is-idle) .install { display: none; }
+
+.help { margin: 0 0 12px; line-height: 1.45; color: #ccc; }
+
 /* ---------- settings sheet ---------- */
 .sheet {
   width: min(440px, calc(100vw - 24px));
@@ -209,7 +226,7 @@ button { font: inherit; color: inherit; }
 @media (orientation: landscape) and (max-height: 600px) {
   .clock { grid-template-rows: none; grid-template-columns: 1fr auto 1fr; }
   .bar { flex-direction: column; padding: 0 4px; }
-  .label { display: none; }
+  .label, .install { display: none; }
   .side--top { transform: none; }
   .time { font-size: clamp(48px, min(13vw, 26vh), 180px); }
 }

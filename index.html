@@ -34,6 +34,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 2.5h4M12 2.5v3"/></svg>
       </button>
       <span class="label" id="tcLabel">5 + 0</span>
+      <button class="install" id="btnInstall" hidden>Install</button>
     </div>
 
     <button class="side side--bottom" id="side0" data-player="0" aria-label="Bottom player clock">
@@ -67,6 +68,15 @@
         <button value="cancel" class="btn btn--ghost">Cancel</button>
         <button value="apply" class="btn" id="btnApply">Start new game</button>
       </div>
+    </form>
+  </dialog>
+
+  <dialog class="sheet" id="iosHelp">
+    <form method="dialog">
+      <h2>Install on iPhone</h2>
+      <p class="help">Tap the <strong>Share</strong> button in Safari's toolbar, then choose <strong>Add to Home Screen</strong>.</p>
+      <p class="help">The clock then opens full screen from your home screen and works offline.</p>
+      <div class="actions"><button class="btn">Got it</button></div>
     </form>
   </dialog>
 

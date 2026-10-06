@@ -1,5 +1,5 @@
 // Bump the version when any app file changes so clients pick up the new shell.
-const CACHE = 'chess-clock-v1';
+const CACHE = 'chess-clock-v2';
 const ASSETS = [
   './',
   'index.html',

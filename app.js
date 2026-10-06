@@ -323,6 +323,40 @@
     }
   });
 
+  // ---------- install ----------
+  const installBtn = $('btnInstall');
+  const iosHelp = $('iosHelp');
+  const isStandalone = window.matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches ||
+    navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  let deferredPrompt = null;
+
+  // Chrome/Edge/Samsung: capture the native prompt and show our own button.
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.hidden = false;
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    installBtn.hidden = true;
+  });
+
+  // iOS never fires beforeinstallprompt; show instructions instead.
+  if (isIOS && !isStandalone) installBtn.hidden = false;
+
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice.catch(() => {});
+      deferredPrompt = null;
+      installBtn.hidden = true;
+    } else if (isIOS) {
+      iosHelp.showModal();
+    }
+  });
+
   // ---------- boot ----------
   buildPresets();
   newGame();
