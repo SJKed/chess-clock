@@ -1,0 +1,219 @@
+:root {
+  --bg: #121212;
+  --idle: #1f1f1f;
+  --idle-ink: #8a8a8a;
+  --active: #f2b233;
+  --active-ink: #1a1305;
+  --low: #e5533d;
+  --low-ink: #fff;
+  --flag: #7a1d12;
+  --bar: #0b0b0b;
+  --bar-ink: #d8d8d8;
+  --radius: 22px;
+  --gap: 8px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: #eee;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+button { font: inherit; color: inherit; }
+
+.clock {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  gap: var(--gap);
+  padding: calc(env(safe-area-inset-top) + var(--gap)) calc(env(safe-area-inset-right) + var(--gap))
+           calc(env(safe-area-inset-bottom) + var(--gap)) calc(env(safe-area-inset-left) + var(--gap));
+}
+
+/* ---------- player halves ---------- */
+.side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--idle);
+  color: var(--idle-ink);
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+  overflow: hidden;
+}
+
+.side--top { transform: rotate(180deg); }
+
+.time {
+  font-size: clamp(64px, min(24vw, 17vh), 220px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.meta {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.side.is-active { background: var(--active); color: var(--active-ink); }
+.side.is-active.is-low { background: var(--low); color: var(--low-ink); }
+.side.is-flagged { background: var(--flag); color: #ffd9d3; }
+.side.is-flagged .meta::after { content: " · flag"; }
+
+.clock.is-paused .side.is-active { background: #5a4613; color: #f2d79a; }
+
+.side:active { filter: brightness(0.92); }
+
+/* ---------- middle bar ---------- */
+.bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 4px 0;
+  color: var(--bar-ink);
+}
+
+.ctl {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #262626;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ctl:active { background: #333; }
+.ctl svg {
+  width: 22px; height: 22px;
+  fill: none; stroke: currentColor; stroke-width: 2.2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.ctl--main { width: 56px; height: 56px; background: #eee; color: #111; }
+.ctl--main:active { background: #ccc; }
+.ctl--main .i-play { fill: currentColor; stroke-width: 1.5; }
+
+.i-play { display: none; }
+.clock.is-paused .i-play,
+.clock.is-idle .i-play { display: block; }
+.clock.is-paused .i-pause,
+.clock.is-idle .i-pause { display: none; }
+.clock.is-idle .ctl--main,
+.clock.is-over .ctl--main { opacity: 0.35; pointer-events: none; }
+
+.label {
+  position: absolute;
+  right: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #777;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- settings sheet ---------- */
+.sheet {
+  width: min(440px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  border: 0;
+  border-radius: 20px;
+  padding: 20px;
+  background: #1c1c1c;
+  color: #eee;
+}
+.sheet::backdrop { background: rgba(0, 0, 0, 0.6); }
+.sheet h2 { margin: 0 0 14px; font-size: 20px; }
+
+.presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.preset {
+  padding: 12px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: #2a2a2a;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.preset small { display: block; font-weight: 500; font-size: 11px; opacity: 0.6; margin-top: 2px; }
+.preset.is-selected { background: var(--active); color: var(--active-ink); }
+
+.custom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid #333;
+  border-radius: 12px;
+}
+.custom legend { padding: 0 6px; font-size: 13px; color: #999; }
+.custom label { display: grid; gap: 6px; font-size: 13px; color: #aaa; }
+.custom input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  background: #111;
+  color: #fff;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.toggle { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 15px; }
+.toggle input { width: 20px; height: 20px; accent-color: var(--active); }
+
+.actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+.btn {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--active);
+  color: var(--active-ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn--ghost { background: transparent; color: #bbb; }
+
+/* Landscape: put players side by side, both reading upright from their own edge. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .clock { grid-template-rows: none; grid-template-columns: 1fr auto 1fr; }
+  .bar { flex-direction: column; padding: 0 4px; }
+  .label { display: none; }
+  .side--top { transform: none; }
+  .time { font-size: clamp(48px, min(13vw, 26vh), 180px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side { transition: none; }
+}

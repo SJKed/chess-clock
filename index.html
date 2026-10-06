@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Chess Clock</title>
+  <meta name="description" content="A two-player chess clock. Tap your side to pass the turn.">
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chess Clock">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="clock" id="clock">
+    <button class="side side--top" id="side1" data-player="1" aria-label="Top player clock">
+      <span class="time" id="time1">5:00</span>
+      <span class="meta"><span id="moves1">0</span> moves</span>
+    </button>
+
+    <div class="bar" role="toolbar" aria-label="Clock controls">
+      <button class="ctl" id="btnReset" aria-label="Reset">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5"/></svg>
+      </button>
+      <button class="ctl ctl--main" id="btnPause" aria-label="Pause">
+        <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+        <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+      </button>
+      <button class="ctl" id="btnSettings" aria-label="Time control">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 2.5h4M12 2.5v3"/></svg>
+      </button>
+      <span class="label" id="tcLabel">5 + 0</span>
+    </div>
+
+    <button class="side side--bottom" id="side0" data-player="0" aria-label="Bottom player clock">
+      <span class="time" id="time0">5:00</span>
+      <span class="meta"><span id="moves0">0</span> moves</span>
+    </button>
+  </main>
+
+  <dialog class="sheet" id="settings">
+    <form method="dialog" id="settingsForm">
+      <h2>Time control</h2>
+      <div class="presets" id="presets"></div>
+      <fieldset class="custom">
+        <legend>Custom</legend>
+        <label>Minutes
+          <input type="number" id="inMinutes" min="1" max="600" step="1" inputmode="numeric">
+        </label>
+        <label>Increment (s)
+          <input type="number" id="inIncrement" min="0" max="300" step="1" inputmode="numeric">
+        </label>
+      </fieldset>
+      <label class="toggle">
+        <input type="checkbox" id="inSound">
+        <span>Click sound</span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="inVibrate">
+        <span>Vibrate</span>
+      </label>
+      <div class="actions">
+        <button value="cancel" class="btn btn--ghost">Cancel</button>
+        <button value="apply" class="btn" id="btnApply">Start new game</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
